@@ -1,0 +1,135 @@
+# Software Requirements Specification (SRS)
+# Project: Koliko Wears Admin Dashboard
+
+## 1. Introduction
+The Koliko Wears Admin Dashboard is a comprehensive Single Page Application (SPA) designed to manage the backend operations of an e-commerce footwear and repair business. It provides administrators with tools to track sales, manage inventory, process orders, handle customer data, and track repair service requests.
+
+## 2. Technical Architecture
+- **Frontend Framework:** React 19 (Functional Components, Hooks)
+- **Styling:** Tailwind CSS (Utility-first framework)
+- **Routing:** React Router DOM v7
+- **Icons:** Lucide React
+- **Charts:** Recharts
+- **State Management:** React Local State (useState, useReducer)
+- **Data Layer:** Mock API Service (Simulating Supabase/REST architecture with async delays)
+- **Localization:** Currency set to Ghana Cedis (GH₵)
+
+## 3. Global Features & UI/UX
+### 3.1. Layout & Navigation
+- **Sidebar Navigation:** Collapsible sidebar containing links to Overview, Products, Orders, Repairs, Customers, Analytics, Finance, Promotions, Inventory, and Settings.
+- **Responsiveness:** Sidebar transforms into a hamburger menu overlay on mobile devices.
+- **Header:** Contains Global Search, Theme Toggle, Notification Bell, and User Profile.
+
+### 3.2. Theme Management
+- **Dual Mode:** Support for Light Mode and Dark Mode.
+- **Persistence:** Theme preference is saved in `localStorage`.
+- **Implementation:** Uses Tailwind's `dark:` variant class strategy. CSS variables are used for chart colors to ensure readability in both modes.
+
+### 3.3. Notification Center
+- Accessible via the Bell icon in the header.
+- Displays a dropdown of recent alerts (Stock levels, New Orders, System messages).
+- **Functionality:**
+  - Badge counter for unread notifications.
+  - "Mark as Read" functionality on click.
+  - "Mark All as Read" button.
+  - Visual distinction between read and unread items.
+
+## 4. Functional Modules
+
+### 4.1. Authentication
+- **Login:** Email and Password authentication.
+- **Credentials:** Hardcoded admin credentials (`admin@koliko.com` / `admin`).
+- **Security:** Protected routes redirect unauthenticated users to the login page.
+
+### 4.2. Dashboard (Overview)
+- **KPI Cards:** Displays Total Revenue, Total Orders, New Customers, and Products Sold with percentage growth indicators.
+- **Revenue Chart:** Line chart visualizing revenue trends over the year.
+- **Orders Chart:** Bar chart visualizing order volume per month.
+- **Currency:** All monetary values displayed in GH₵.
+
+### 4.3. Product Management
+- **List View:** Tabular display of products with images, names, prices, stock, and status.
+- **Filtering:** Search bar for Product Name and Category.
+- **CRUD Operations:**
+  - **Create:** Add new products with details and images.
+  - **Read:** View product details.
+  - **Update:** Edit product details, including image management.
+  - **Delete:** Remove products from the catalog.
+- **Image Handling:** Client-side image compression and simulated upload.
+
+### 4.4. Order Management
+- **List View:** Displays Order ID, Customer, Date, Payment Method, Total, and Status.
+- **Status Management:** Quick-change dropdown in the table row (Pending, Processing, Shipped, Delivered, Cancelled).
+- **Detail View (Modal):**
+  - Customer Information.
+  - Payment Details.
+  - Order Items (Quantity, Price, Subtotal).
+- **Special Feature - Estimated Delivery:**
+  - When status changes to 'Shipped', the system prompts for an "Estimated Delivery Date".
+  - This date is displayed in the table and modal.
+
+### 4.5. Customer Management
+- **List View:** Customer details, contact info, total spend, and account status.
+- **Filtering:** Search by Name/Email; Filter by Status (Active/Suspended).
+- **Actions:**
+  - View Customer Profile (Modal).
+  - Suspend/Activate Account.
+- **Profile Modal:** Displays avatar, detailed contact info, join date, and calculated financial stats (Total Spent, Avg Order Value).
+
+### 4.6. Repair Services
+- **Purpose:** Track status of shoe repair requests.
+- **List View:** Request ID, Customer, Issue Description, Date, Cost, and Status.
+- **Filtering:** Search by ID/Customer/Product; Filter by Workflow Status.
+- **Workflow Statuses:** Pending, In Progress, Waiting for Parts, Completed, Rejected.
+- **Request Creation:**
+  - Form to input customer details, product info, and issue description.
+  - **Image Upload:** Validates file type (Image only) and size (< 5MB).
+- **Request Management (Modal):**
+  - View full issue description.
+  - **Image Viewing:** View uploaded damage image.
+  - **Image Download:** Button to download the damage image for offline viewing.
+  - **Admin Updates:** Set Estimated Cost (GH₵), Update Status, Set Estimated Completion Date.
+
+### 4.7. Analytics
+- **Visualizations:**
+  - Sales by Category (Pie Chart).
+  - Payment Method Distribution (Bar Chart).
+- **Inventory Health:** Table highlighting "Low Stock" and "Out of Stock" items with urgency badges.
+
+## 5. Data Models (Types)
+
+### 5.1. Product
+- `id`: string
+- `name`: string
+- `price`: number
+- `category`: string
+- `stock`: number
+- `imageUrl`: string
+- `images`: string[]
+- `status`: 'active' | 'inactive'
+
+### 5.2. Order
+- `id`: string
+- `customerId`: string
+- `customerName`: string
+- `total`: number
+- `status`: OrderStatus Enum
+- `date`: string
+- `items`: OrderItem[]
+- `estimatedDeliveryDate`: string (Optional)
+
+### 5.3. Repair Request
+- `id`: string
+- `customerName`: string
+- `productName`: string
+- `issueDescription`: string
+- `status`: RepairStatus Enum
+- `estimatedCost`: number
+- `imageUrl`: string (Optional)
+- `estimatedCompletionDate`: string (Optional)
+
+## 6. API Services (Simulated)
+- The application uses a `services/api.ts` file to mock backend interactions.
+- All data mutations (Create, Update, Delete) are performed on local memory arrays (`constants.ts`) with artificial delays (300ms - 1500ms) to simulate network latency.
+- **Storage:** Image uploads are simulated using `URL.createObjectURL` for local preview purposes.
+

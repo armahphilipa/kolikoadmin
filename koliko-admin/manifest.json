@@ -1,0 +1,16 @@
+{
+  "short_name": "KolikoAdmin",
+  "name": "Koliko Wears Admin Dashboard",
+  "icons": [
+    {
+      "src": "https://esm.sh/lucide-static@0.363.0/icons/layout-dashboard.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0f172a",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#4f46e5"
+}

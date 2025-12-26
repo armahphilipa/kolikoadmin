@@ -1,0 +1,6 @@
+{
+  "name": "Koliko Wears Admin",
+  "description": "Production-ready admin dashboard for Koliko Wears e-commerce. Features dark mode, inventory tracking, financial analytics, and order management.",
+  "version": "1.0.0",
+  "requestFramePermissions": []
+}
